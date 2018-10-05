@@ -1,0 +1,5 @@
+product,rate,quantity,price
+bed frame(Q),500,1,$500.00
+mattress(Q),1000,1,$1000.00
+Pillow(Q),60,4,$240.00
+Bed Set(Q),140,1,$140.00
