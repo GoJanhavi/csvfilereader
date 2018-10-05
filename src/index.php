@@ -5,37 +5,48 @@
  * Date: 10/4/18
  * Time: 9:49 AM
  */
-main::start();
+main::start("data.csv");
 Class main{
-    static public function start(){
-        $records = csv ::getRecords();
-        $table = html::generateTable($records);
-        system::printPage($table);
+    static public function start($filename){
+        $records = csv ::getRecords($filename);
+       // $table = html::generateTable($records);
+        system::printPage($records);
     }
 }
 class csv{
-    static public function getRecords(){
+    static public function getRecords($file){
 
-        $records = 'testing functions';
-        return $records;
-        
+
+        $file = fopen($file,"r");
+
+        while(! feof($file))
+        {
+            $row = fgetcsv($file);
+            $recordArray[] = $row;
+        }
+
+        fclose($file);
+
+        return $recordArray;
+
     }
 }
 
-class html{
+
+/*class html{
     static public function generateTable($records){
 
         $table = $records;
         return $table;
 
     }
-}
+}*/
 
 class system{
 
     static public function printPage($page){
 
-        echo $page;
+        print_r($page);
 
     }
 
