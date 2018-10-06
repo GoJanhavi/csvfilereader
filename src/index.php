@@ -10,7 +10,8 @@ Class main{
     static public function start($filename){
         $records = csv ::getRecords($filename);
         $table = html::generateTable($records);
-       //system::printPage($records);
+
+        include 'view/layout.html';
     }
 }
 class csv{
@@ -38,7 +39,6 @@ class csv{
         }
 
         fclose($file);
-
         return $recordArray;
 
     }
@@ -47,35 +47,38 @@ class csv{
 
 class html{
     static public function generateTable($records){
-        $count = 0;
+        $tbody="";
         foreach ($records as $item) {
-            if ($count==0){
                 $array = $item->returnArray();
                 $keys=array_keys($array);
-                system::printPage($keys);
-            }
-            else{
-                $array = $item->returnArray();
                 $values=array_values($array);
-                system::printPage($values);
-            }
-            $count++;
-
+                $theadOutput = html::generateRowColStructure($keys,'th');
+                $tbodyOutput = html::generateRowColStructure($values,'td');
+                $tbody.= $tbodyOutput;
         }
-      //  return $table;
 
-    }
-}
-
-class system{
-
-    static public function printPage($printValue){
-
-        print_r($printValue);
+       $table = "<thead class='thead-dark'>".$theadOutput."</thead><tbody>".$tbody."</tbody>";
+       return $table;
 
     }
 
+    static public function generateRowColStructure($array,$colType){
+        $htmlOutput = '';
+        foreach($array as $key => $value){
+            if($key==0){
+                $htmlOutput .= '<tr>';
+            }
+            $htmlOutput .= "<$colType>$value</$colType>";
+            if($key==(count($array)-1)){
+                $htmlOutput .= '</tr>';
+            }
+        }
+        return $htmlOutput;
+    }
+
 }
+
+
 
 class record{
 
@@ -106,4 +109,13 @@ class recordsFactory{
        $record = new record($fieldNames, $values);
         return $record;
     }
+}
+class system{
+
+    static public function printPage($printValue){
+
+        print_r($printValue);
+
+    }
+
 }
