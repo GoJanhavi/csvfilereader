@@ -1,0 +1,39 @@
+.fix-nav{
+    position: fixed;
+    z-index: 1;
+    right: 0;
+    top: 0;
+    left: 0;
+}
+.main-wrapper{
+    background-color: #edf2f5;
+    margin-top: 57px;
+    height: 90vh;
+}
+.pad-t-b-20{
+    padding: 20px 0;
+}
+.row{
+    margin :0 !important;
+}
+table{
+    border: 1px solid #dee2e6;
+}
+h1,h2,h3,h4,h5,h6{
+    color: #333333;
+}
+h2{
+    color: #2981b5;
+    text-align: center;
+    font-size: 32px;
+    margin:15px;
+}
+.margin-top45{
+    margin-top: 45px;
+}
+.margin-top30{
+    margin-top: 30px;
+}
+small{
+    font-size: 10px;
+}
