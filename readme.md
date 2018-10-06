@@ -6,3 +6,4 @@
 5. Connect the project with Heroku
 6. Create a Procfile and for setting document root add "web: vendor/bin/heroku-php-apache2 public/" to the file
 7. Commit changes to Heroku
+8. After basic setup start creating project.
