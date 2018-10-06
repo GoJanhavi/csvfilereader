@@ -44,23 +44,36 @@ class csv{
     }
 }
 
+class htmlTable{
+    static public function generateTableStructure($thead, $tbody){
+        $table = "<thead class='thead-dark'>".$thead."</thead><tbody>".$tbody."</tbody>";
+        return $table;
+    }
+}
 
 class html{
     static public function generateTable($records){
         $tbody="";
         foreach ($records as $item) {
                 $array = $item->returnArray();
+
                 $keys=array_keys($array);
                 $values=array_values($array);
-                $theadOutput = html::generateRowColStructure($keys,'th');
-                $tbodyOutput = html::generateRowColStructure($values,'td');
+
+                $theadOutput = htmlTableRows::generateRowColStructure($keys,'th');
+
+                $tbodyOutput = htmlTableRows::generateRowColStructure($values,'td');
                 $tbody.= $tbodyOutput;
         }
 
-       $table = "<thead class='thead-dark'>".$theadOutput."</thead><tbody>".$tbody."</tbody>";
-       return $table;
+        $table = htmlTable::generateTableStructure($theadOutput,$tbody);
+        return $table;
 
     }
+
+}
+
+class htmlTableRows{
 
     static public function generateRowColStructure($array,$colType){
         $htmlOutput = '';
@@ -77,8 +90,6 @@ class html{
     }
 
 }
-
-
 
 class record{
 
