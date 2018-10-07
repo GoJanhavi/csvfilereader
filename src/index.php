@@ -5,6 +5,7 @@
  * Date: 10/4/18
  * Time: 9:49 AM
  */
+
 main::start("data.csv");
 Class main{
     static public function start($filename){
@@ -14,6 +15,7 @@ Class main{
         include 'view/layout.html';
     }
 }
+//read csv file and convert it to object array
 class csv{
     static public function getRecords($file){
 
@@ -44,37 +46,38 @@ class csv{
     }
 }
 
-class htmlTable{
-    static public function generateTableStructure($thead, $tbody){
-        $table = "<thead class='thead-dark'>".$thead."</thead><tbody>".$tbody."</tbody>";
-        return $table;
-    }
-}
-
+//generate table html
 class html{
+    //convert records to array
     static public function generateTable($records){
         $tbody="";
+
         foreach ($records as $item) {
-                $array = $item->returnArray();
+                $arrayOfRecords = get_object_vars($item); //converts object to array
 
-                $keys=array_keys($array);
-                $values=array_values($array);
+                $values = array_values($arrayOfRecords);
 
-                $theadOutput = htmlTableRows::generateRowColStructure($keys,'th');
-
-                $tbodyOutput = htmlTableRows::generateRowColStructure($values,'td');
+                //generates table body
+                $tbodyOutput = html::generateRowColStructure($values,'td');
                 $tbody.= $tbodyOutput;
         }
 
-        $table = htmlTable::generateTableStructure($theadOutput,$tbody);
+        $tableHeader=html::generateTableHeader($arrayOfRecords);
+
+        $table = html::generateTableStructure($tableHeader,$tbody);
+
         return $table;
 
     }
 
-}
+    //generate table header
+    static public function generateTableHeader($arrayOfRecord){
+        $keys = array_keys($arrayOfRecord);
+        $theadOutput = html::generateRowColStructure($keys,'th');
+        return $theadOutput;
+    }
 
-class htmlTableRows{
-
+    //generate rows and column structure
     static public function generateRowColStructure($array,$colType){
         $htmlOutput = '';
         foreach($array as $key => $value){
@@ -89,17 +92,35 @@ class htmlTableRows{
         return $htmlOutput;
     }
 
+    //combines header and body of table
+    static public function generateTableStructure($thead, $tbody){
+        $table = "<thead class='thead-dark'>".$thead."</thead><tbody>".$tbody."</tbody>";
+        return $table;
+    }
+
+}
+
+
+
+//generate associative array of records
+class recordsFactory{
+
+    static public function create(Array $fieldNames = null, Array $values = null){
+
+       $record = new record($fieldNames, $values);
+        return $record;
+    }
 }
 
 class record{
 
     public function __construct(Array $fieldNames = null, Array $values = null)
     {
-       $record = array_combine($fieldNames,$values);
+        $record = array_combine($fieldNames,$values);
 
-       foreach($record as $key => $value) {
-           $this->createProperty($key,$value);
-       }
+        foreach($record as $key => $value) {
+            $this->createProperty($key,$value);
+        }
 
     }
 
@@ -113,18 +134,11 @@ class record{
     }
 }
 
-class recordsFactory{
 
-    static public function create(Array $fieldNames = null, Array $values = null){
-
-       $record = new record($fieldNames, $values);
-        return $record;
-    }
-}
+//utility functions
 class system{
 
     static public function printPage($printValue){
-
         print_r($printValue);
 
     }
